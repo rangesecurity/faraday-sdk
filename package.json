@@ -11,17 +11,24 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "generate": "rimraf ./src/gen && openapi-generator-cli generate -g typescript-fetch -i openapi/openapi.json -o src/gen --skip-validate-spec --additional-properties npmName=faraday-sdk,npmVersion=$npm_package_version,typescriptThreePlus=true,supportsES6=true,useUnionTypes=true,useSingleRequestParameter=true,modelPropertyNaming=original,enumPropertyNaming=original",
-    "build": "tsc -p tsconfig.json",
-    "prepublishOnly": "npm run generate && npm run build"
+    "generate": "rimraf ./src/gen && openapi-generator-cli generate -g typescript-fetch -i openapi/openapi.json -o src/gen --skip-validate-spec --global-property apis,models,supportingFiles --additional-properties typescriptThreePlus=true,supportsES6=true,useUnionTypes=true,useSingleRequestParameter=true,modelPropertyNaming=original,enumPropertyNaming=original",
+    "build": "npm run generate && tsc -p tsconfig.json",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.12",
-    "typescript": "^5.6.3",
-    "rimraf": "^6.0.1"
+    "@types/node": "^24.7.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
   }
 }

@@ -1,12 +1,12 @@
-// Re-export everything the generator provides
-export * from "./gen";
-
-// Convenience: create a configured API instance in one call
-import { Configuration } from "./gen";
+// Re-export generated surfaces
+export * from "./gen/apis";
+export * from "./gen/models";
+export * from "./gen/runtime";
+import { Configuration } from "./gen/runtime";
 
 export type FaradayClientOptions = {
   baseUrl: string;
-  apiKey?: string;              // if you use bearer auth
+  apiKey?: string;
   headers?: Record<string, string>;
 };
 
@@ -15,17 +15,11 @@ export const makeConfig = (opts: FaradayClientOptions) =>
     basePath: opts.baseUrl,
     headers: {
       ...(opts.apiKey ? { Authorization: `Bearer ${opts.apiKey}` } : {}),
-      ...(opts.headers ?? {})
-    }
+      ...(opts.headers ?? {}),
+    },
   });
 
-/**
- * Example helper for creating an API class with default config.
- * Replace `DefaultApi` with the actual API class your generator emits
- * (e.g., `TransactionsApi`, `QuotesApi`, etc.).
- */
 export const faradayClient = <T extends new (cfg: Configuration) => InstanceType<T>>(
   ApiCtor: T,
   opts: FaradayClientOptions
 ) => new ApiCtor(makeConfig(opts));
-
