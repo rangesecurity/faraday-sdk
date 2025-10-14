@@ -1,0 +1,27 @@
+{
+  "name": "faraday-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript client SDK for the Faraday API",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "generate": "rimraf ./src/gen && openapi-generator-cli generate -g typescript-fetch -i openapi/openapi.json -o src/gen --skip-validate-spec --additional-properties npmName=faraday-sdk,npmVersion=$npm_package_version,typescriptThreePlus=true,supportsES6=true,useUnionTypes=true,useSingleRequestParameter=true,modelPropertyNaming=original,enumPropertyNaming=original",
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run generate && npm run build"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.12",
+    "typescript": "^5.6.3",
+    "rimraf": "^6.0.1"
+  }
+}

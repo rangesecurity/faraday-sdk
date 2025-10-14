@@ -1,0 +1,8 @@
+# Ignore extra packaging files the generator might write
+.gitignore
+.gitlab-ci.yml
+.travis.yml
+pom.xml
+.build.sh
+README.md
+
