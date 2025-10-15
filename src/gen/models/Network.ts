@@ -28,7 +28,8 @@ export const Network = {
     avax: 'avax',
     bnb: 'bnb',
     neutron_1: 'neutron-1',
-    celestia: 'celestia'
+    celestia: 'celestia',
+    solana_devnet: 'solana-devnet'
 } as const;
 export type Network = typeof Network[keyof typeof Network];
 

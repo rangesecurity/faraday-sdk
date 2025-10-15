@@ -1,5 +1,5 @@
 {
-  "name": "faraday-sdk",
+  "name": "@rangesecurity/faraday-sdk",
   "version": "0.1.0",
   "description": "TypeScript client SDK for the Faraday API",
   "type": "module",
@@ -7,7 +7,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,8 +24,29 @@
   "scripts": {
     "generate": "rimraf ./src/gen && openapi-generator-cli generate -g typescript-fetch -i openapi/openapi.json -o src/gen --skip-validate-spec --global-property apis,models,supportingFiles --additional-properties typescriptThreePlus=true,supportsES6=true,useUnionTypes=true,useSingleRequestParameter=true,modelPropertyNaming=original,enumPropertyNaming=original",
     "build": "npm run generate && tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
     "prepare": "npm run build"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rangesecurity/faraday-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rangesecurity/faraday-sdk/issues"
+  },
+  "homepage": "https://github.com/rangesecurity/faraday-sdk#readme",
+  "keywords": [
+    "faraday",
+    "sdk",
+    "api",
+    "typescript",
+    "fetch",
+    "openapi"
+  ],
+  "license": "MIT",
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.12",
     "@types/node": "^24.7.2",
