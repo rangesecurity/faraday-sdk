@@ -4,29 +4,42 @@ TypeScript client for the Faraday API
 
 ## Install
 
-```bash
+```sh
 npm install @rangesecurity/faraday-sdk
 ```
 
 ## Basic Usage
 
 ```ts
-import { faradayClient, makeConfig, DefaultApi } from "faraday-sdk";
+import "dotenv/config";
+import { Configuration, ChainsApi } from "faraday-sdk"; 
 
-const baseUrl = "https://api.faraday.range.org";
+const baseUrl = process.env.FARADAY_BASE_URL || "https://api.faraday.range.org";
 
-// Option A: generic helper + API class
-const api = faradayClient(DefaultApi, { baseUrl, apiKey: "YOUR_TOKEN" });
+const cfg = new Configuration({
+  basePath: baseUrl,
+  headers: { accept: "application/json" },
+});
+const chainsApi = new ChainsApi(cfg);
 
-// Option B: manual configuration
-// import { Configuration, DefaultApi } from "faraday-sdk";
-// const cfg = makeConfig({ baseUrl, apiKey: "YOUR_TOKEN" });
-// const api = new DefaultApi(cfg);
+/**
+ * Example: Fetch all supported chains
+ */
+const main = async (): Promise<void> => {
+  try {
+    const res = await chainsApi.listNetworks();
 
-const run = async () => {
-  const res = await api.healthCheck();   // replace with a real method from your API
-  console.log(res);
+    console.log("Chains:");
+    console.dir(res, { depth: null });
+  } catch (err) {
+    console.error("Error fetching chains:");
+    console.error(err instanceof Error ? err.message : err);
+    process.exitCode = 1;
+  }
 };
 
-run();
+main().catch((err) => {
+  console.error("Unhandled exception:", err);
+  process.exit(1);
+});
 ````
