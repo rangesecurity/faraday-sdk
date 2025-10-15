@@ -5,7 +5,7 @@ TypeScript client for the Faraday API
 ## Install
 
 ```bash
-npm install git+https://github.com/rangesecurity/faraday-sdk.git
+npm install @rangesecurity/faraday-sdk
 ```
 
 ## Basic Usage
