@@ -1,6 +1,6 @@
 {
   "name": "@rangesecurity/faraday-sdk",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "TypeScript client SDK for the Faraday API",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
