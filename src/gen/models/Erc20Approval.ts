@@ -16,78 +16,69 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface FeeEstimate
+ * @interface Erc20Approval
  */
-export interface FeeEstimate {
+export interface Erc20Approval {
     /**
-     * Asset denom or contract address of the fee currency
+     * Approval amount (integer string)
      * @type {string}
-     * @memberof FeeEstimate
+     * @memberof Erc20Approval
      */
-    fee_asset: string;
+    amount: string;
     /**
-     * Network fee charged for the transaction, in base units (integer string)
+     * Spender contract address
      * @type {string}
-     * @memberof FeeEstimate
+     * @memberof Erc20Approval
      */
-    network_fee: string;
+    spender: string;
     /**
-     * Quote provider fee, in base units (integer string)
+     * Token contract address
      * @type {string}
-     * @memberof FeeEstimate
+     * @memberof Erc20Approval
      */
-    router_fee: string;
-    /**
-     * Total fee (sum of network and router fees), in base units (integer string)
-     * @type {string}
-     * @memberof FeeEstimate
-     */
-    total_fee: string;
+    token_contract: string;
 }
 
 /**
- * Check if a given object implements the FeeEstimate interface.
+ * Check if a given object implements the Erc20Approval interface.
  */
-export function instanceOfFeeEstimate(value: object): value is FeeEstimate {
-    if (!('fee_asset' in value) || value['fee_asset'] === undefined) return false;
-    if (!('network_fee' in value) || value['network_fee'] === undefined) return false;
-    if (!('router_fee' in value) || value['router_fee'] === undefined) return false;
-    if (!('total_fee' in value) || value['total_fee'] === undefined) return false;
+export function instanceOfErc20Approval(value: object): value is Erc20Approval {
+    if (!('amount' in value) || value['amount'] === undefined) return false;
+    if (!('spender' in value) || value['spender'] === undefined) return false;
+    if (!('token_contract' in value) || value['token_contract'] === undefined) return false;
     return true;
 }
 
-export function FeeEstimateFromJSON(json: any): FeeEstimate {
-    return FeeEstimateFromJSONTyped(json, false);
+export function Erc20ApprovalFromJSON(json: any): Erc20Approval {
+    return Erc20ApprovalFromJSONTyped(json, false);
 }
 
-export function FeeEstimateFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeeEstimate {
+export function Erc20ApprovalFromJSONTyped(json: any, ignoreDiscriminator: boolean): Erc20Approval {
     if (json == null) {
         return json;
     }
     return {
         
-        'fee_asset': json['fee_asset'],
-        'network_fee': json['network_fee'],
-        'router_fee': json['router_fee'],
-        'total_fee': json['total_fee'],
+        'amount': json['amount'],
+        'spender': json['spender'],
+        'token_contract': json['token_contract'],
     };
 }
 
-export function FeeEstimateToJSON(json: any): FeeEstimate {
-    return FeeEstimateToJSONTyped(json, false);
+export function Erc20ApprovalToJSON(json: any): Erc20Approval {
+    return Erc20ApprovalToJSONTyped(json, false);
 }
 
-export function FeeEstimateToJSONTyped(value?: FeeEstimate | null, ignoreDiscriminator: boolean = false): any {
+export function Erc20ApprovalToJSONTyped(value?: Erc20Approval | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'fee_asset': value['fee_asset'],
-        'network_fee': value['network_fee'],
-        'router_fee': value['router_fee'],
-        'total_fee': value['total_fee'],
+        'amount': value['amount'],
+        'spender': value['spender'],
+        'token_contract': value['token_contract'],
     };
 }
 

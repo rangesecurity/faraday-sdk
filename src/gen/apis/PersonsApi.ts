@@ -16,11 +16,14 @@
 import * as runtime from '../runtime';
 import type {
   CreatePersonPayload,
+  ErrorResponse,
   Person,
 } from '../models/index';
 import {
     CreatePersonPayloadFromJSON,
     CreatePersonPayloadToJSON,
+    ErrorResponseFromJSON,
+    ErrorResponseToJSON,
     PersonFromJSON,
     PersonToJSON,
 } from '../models/index';

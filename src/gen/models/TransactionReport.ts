@@ -22,49 +22,69 @@ import {
 } from './Person';
 
 /**
+ * Summary of a processed on-chain transaction.
  * 
+ * A `TransactionReport` captures the lifecycle and compliance details
+ * of a submitted transfer, including its hash, network, amount,
+ * and any associated IVMS101 sender and recipient records.
  * @export
  * @interface TransactionReport
  */
 export interface TransactionReport {
     /**
+     * The transaction amount in the smallest base unit.
      * 
+     * For example, 1 USDC = `1000000` when using 6-decimal precision.
      * @type {number}
      * @memberof TransactionReport
      */
     amount: number;
     /**
+     * Timestamp when the transaction was created or first observed.
      * 
+     * Uses UTC and ISO 8601 format.
      * @type {Date}
      * @memberof TransactionReport
      */
     created_at: Date;
     /**
+     * The blockchain network on which the transaction was broadcast.
      * 
+     * Typically matches one of the supported Faraday networks such as
+     * `"osmosis-1"`, `"neutron-1"`, `"ethereum"`, or `"solana-mainnet"`.
      * @type {string}
      * @memberof TransactionReport
      */
     network: string;
     /**
+     * Full IVMS101 record of the transaction recipient, if available.
      * 
+     * Will be `null` if the recipient record has not been attached or processed.
      * @type {Person}
      * @memberof TransactionReport
      */
     recipient?: Person | null;
     /**
+     * Full IVMS101 record of the transaction sender, if available.
      * 
+     * Will be `null` if the sender record has not been attached or processed.
      * @type {Person}
      * @memberof TransactionReport
      */
     sender?: Person | null;
     /**
+     * Whether this transaction was compliant with the Travel Rule (FATF R.16).
      * 
+     * If `true`, sender and recipient identity information were
+     * successfully attached and transmitted according to IVMS101 standards.
      * @type {boolean}
      * @memberof TransactionReport
      */
     travel_rule_compliant: boolean;
     /**
+     * The on-chain transaction hash.
      * 
+     * Used to uniquely identify the transaction on the given network.
      * @type {string}
      * @memberof TransactionReport
      */

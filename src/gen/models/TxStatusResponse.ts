@@ -13,81 +13,82 @@
  */
 
 import { mapValues } from '../runtime';
+import type { TxStatus } from './TxStatus';
+import {
+    TxStatusFromJSON,
+    TxStatusFromJSONTyped,
+    TxStatusToJSON,
+    TxStatusToJSONTyped,
+} from './TxStatus';
+
 /**
  * 
  * @export
- * @interface FeeEstimate
+ * @interface TxStatusResponse
  */
-export interface FeeEstimate {
+export interface TxStatusResponse {
     /**
-     * Asset denom or contract address of the fee currency
+     * Provider name (e.g., "Skip Go", "Squid", "Axelar").
      * @type {string}
-     * @memberof FeeEstimate
+     * @memberof TxStatusResponse
      */
-    fee_asset: string;
+    provider: string;
     /**
-     * Network fee charged for the transaction, in base units (integer string)
-     * @type {string}
-     * @memberof FeeEstimate
+     * Raw provider payload for debugging or analytics.
+     * @type {object}
+     * @memberof TxStatusResponse
      */
-    network_fee: string;
+    raw: object;
     /**
-     * Quote provider fee, in base units (integer string)
-     * @type {string}
-     * @memberof FeeEstimate
+     * Normalized transaction status (Pending, Completed, etc.)
+     * @type {TxStatus}
+     * @memberof TxStatusResponse
      */
-    router_fee: string;
-    /**
-     * Total fee (sum of network and router fees), in base units (integer string)
-     * @type {string}
-     * @memberof FeeEstimate
-     */
-    total_fee: string;
+    status: TxStatus;
 }
 
+
+
 /**
- * Check if a given object implements the FeeEstimate interface.
+ * Check if a given object implements the TxStatusResponse interface.
  */
-export function instanceOfFeeEstimate(value: object): value is FeeEstimate {
-    if (!('fee_asset' in value) || value['fee_asset'] === undefined) return false;
-    if (!('network_fee' in value) || value['network_fee'] === undefined) return false;
-    if (!('router_fee' in value) || value['router_fee'] === undefined) return false;
-    if (!('total_fee' in value) || value['total_fee'] === undefined) return false;
+export function instanceOfTxStatusResponse(value: object): value is TxStatusResponse {
+    if (!('provider' in value) || value['provider'] === undefined) return false;
+    if (!('raw' in value) || value['raw'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
     return true;
 }
 
-export function FeeEstimateFromJSON(json: any): FeeEstimate {
-    return FeeEstimateFromJSONTyped(json, false);
+export function TxStatusResponseFromJSON(json: any): TxStatusResponse {
+    return TxStatusResponseFromJSONTyped(json, false);
 }
 
-export function FeeEstimateFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeeEstimate {
+export function TxStatusResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TxStatusResponse {
     if (json == null) {
         return json;
     }
     return {
         
-        'fee_asset': json['fee_asset'],
-        'network_fee': json['network_fee'],
-        'router_fee': json['router_fee'],
-        'total_fee': json['total_fee'],
+        'provider': json['provider'],
+        'raw': json['raw'],
+        'status': TxStatusFromJSON(json['status']),
     };
 }
 
-export function FeeEstimateToJSON(json: any): FeeEstimate {
-    return FeeEstimateToJSONTyped(json, false);
+export function TxStatusResponseToJSON(json: any): TxStatusResponse {
+    return TxStatusResponseToJSONTyped(json, false);
 }
 
-export function FeeEstimateToJSONTyped(value?: FeeEstimate | null, ignoreDiscriminator: boolean = false): any {
+export function TxStatusResponseToJSONTyped(value?: TxStatusResponse | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'fee_asset': value['fee_asset'],
-        'network_fee': value['network_fee'],
-        'router_fee': value['router_fee'],
-        'total_fee': value['total_fee'],
+        'provider': value['provider'],
+        'raw': value['raw'],
+        'status': TxStatusToJSON(value['status']),
     };
 }
 

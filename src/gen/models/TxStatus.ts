@@ -14,35 +14,24 @@
 
 
 /**
- * 
+ * Canonical transaction lifecycle states shared across all providers.
  * @export
  */
-export const Network = {
-    eth: 'eth',
-    sepolia: 'sepolia',
-    solana: 'solana',
-    oeth: 'oeth',
-    solana_devnet: 'solana-devnet',
-    osmosis_1: 'osmosis-1',
-    arb1: 'arb1',
-    pol: 'pol',
-    base: 'base',
-    avax: 'avax',
-    bnb: 'bnb',
-    neutron_1: 'neutron-1',
-    celestia: 'celestia',
-    opsep: 'opsep',
-    fuji: 'fuji',
-    amoy: 'amoy',
-    basesep: 'basesep'
+export const TxStatus = {
+    submitted: 'submitted',
+    pending: 'pending',
+    completed: 'completed',
+    failed: 'failed',
+    abandoned: 'abandoned',
+    unknown: 'unknown'
 } as const;
-export type Network = typeof Network[keyof typeof Network];
+export type TxStatus = typeof TxStatus[keyof typeof TxStatus];
 
 
-export function instanceOfNetwork(value: any): boolean {
-    for (const key in Network) {
-        if (Object.prototype.hasOwnProperty.call(Network, key)) {
-            if (Network[key as keyof typeof Network] === value) {
+export function instanceOfTxStatus(value: any): boolean {
+    for (const key in TxStatus) {
+        if (Object.prototype.hasOwnProperty.call(TxStatus, key)) {
+            if (TxStatus[key as keyof typeof TxStatus] === value) {
                 return true;
             }
         }
@@ -50,19 +39,19 @@ export function instanceOfNetwork(value: any): boolean {
     return false;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function TxStatusFromJSON(json: any): TxStatus {
+    return TxStatusFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
-    return json as Network;
+export function TxStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean): TxStatus {
+    return json as TxStatus;
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function TxStatusToJSON(value?: TxStatus | null): any {
     return value as any;
 }
 
-export function NetworkToJSONTyped(value: any, ignoreDiscriminator: boolean): Network {
-    return value as Network;
+export function TxStatusToJSONTyped(value: any, ignoreDiscriminator: boolean): TxStatus {
+    return value as TxStatus;
 }
 

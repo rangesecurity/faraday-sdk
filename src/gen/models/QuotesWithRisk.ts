@@ -28,7 +28,7 @@ import {
  */
 export interface QuotesWithRisk {
     /**
-     * All viable quotes from supported aggregators (each `RouteQuote` includes its `provider`)
+     * All viable quotes from supported quote providers (each `RouteQuote` includes its `provider`)
      * @type {Array<RouteQuote>}
      * @memberof QuotesWithRisk
      */

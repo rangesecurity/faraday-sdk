@@ -17,32 +17,18 @@
  * 
  * @export
  */
-export const Network = {
-    eth: 'eth',
-    sepolia: 'sepolia',
-    solana: 'solana',
-    oeth: 'oeth',
-    solana_devnet: 'solana-devnet',
-    osmosis_1: 'osmosis-1',
-    arb1: 'arb1',
-    pol: 'pol',
-    base: 'base',
-    avax: 'avax',
-    bnb: 'bnb',
-    neutron_1: 'neutron-1',
-    celestia: 'celestia',
-    opsep: 'opsep',
-    fuji: 'fuji',
-    amoy: 'amoy',
-    basesep: 'basesep'
+export const ProviderKind = {
+    aggregator: 'aggregator',
+    direct: 'direct',
+    bridge: 'bridge'
 } as const;
-export type Network = typeof Network[keyof typeof Network];
+export type ProviderKind = typeof ProviderKind[keyof typeof ProviderKind];
 
 
-export function instanceOfNetwork(value: any): boolean {
-    for (const key in Network) {
-        if (Object.prototype.hasOwnProperty.call(Network, key)) {
-            if (Network[key as keyof typeof Network] === value) {
+export function instanceOfProviderKind(value: any): boolean {
+    for (const key in ProviderKind) {
+        if (Object.prototype.hasOwnProperty.call(ProviderKind, key)) {
+            if (ProviderKind[key as keyof typeof ProviderKind] === value) {
                 return true;
             }
         }
@@ -50,19 +36,19 @@ export function instanceOfNetwork(value: any): boolean {
     return false;
 }
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
+export function ProviderKindFromJSON(json: any): ProviderKind {
+    return ProviderKindFromJSONTyped(json, false);
 }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
-    return json as Network;
+export function ProviderKindFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProviderKind {
+    return json as ProviderKind;
 }
 
-export function NetworkToJSON(value?: Network | null): any {
+export function ProviderKindToJSON(value?: ProviderKind | null): any {
     return value as any;
 }
 
-export function NetworkToJSONTyped(value: any, ignoreDiscriminator: boolean): Network {
-    return value as Network;
+export function ProviderKindToJSONTyped(value: any, ignoreDiscriminator: boolean): ProviderKind {
+    return value as ProviderKind;
 }
 

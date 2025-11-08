@@ -27,6 +27,20 @@ import {
     NetworkToJSON,
     NetworkToJSONTyped,
 } from './Network';
+import type { RouteTransaction } from './RouteTransaction';
+import {
+    RouteTransactionFromJSON,
+    RouteTransactionFromJSONTyped,
+    RouteTransactionToJSON,
+    RouteTransactionToJSONTyped,
+} from './RouteTransaction';
+import type { Provider } from './Provider';
+import {
+    ProviderFromJSON,
+    ProviderFromJSONTyped,
+    ProviderToJSON,
+    ProviderToJSONTyped,
+} from './Provider';
 
 /**
  * 
@@ -47,13 +61,22 @@ export interface RouteQuote {
      */
     amount_out_estimated: string;
     /**
-     * RFC3339 timestamp when the quote was created
+     * RFC3339 timestamp when the quote was created (UTC)
      * @type {Date}
      * @memberof RouteQuote
      */
     created_at: Date;
     /**
-     * Fees, if provided by the aggregator
+     * Optional RFC3339 timestamp indicating when the quote becomes invalid (UTC).
+     * 
+     * Some providers include explicit expiry times; otherwise this field may be `null`.
+     * Consumers should treat quotes without this field as ephemeral and validate freshness before execution.
+     * @type {Date}
+     * @memberof RouteQuote
+     */
+    expires_at: Date | null;
+    /**
+     * Fees, if provided by the quote provider
      * @type {FeeEstimate}
      * @memberof RouteQuote
      */
@@ -71,23 +94,23 @@ export interface RouteQuote {
      */
     from_chain: Network;
     /**
+     * Quote UUID
+     * @type {string}
+     * @memberof RouteQuote
+     */
+    id: string;
+    /**
      * Minimum guaranteed output in base units (integer string)
      * @type {string}
      * @memberof RouteQuote
      */
     min_amount_out: string;
     /**
-     * Aggregator/provider identifier (e.g., "deBridge DLN", "LI.FI")
-     * @type {string}
+     * Quote provider identifier (e.g., "deBridge DLN", "LI.FI")
+     * @type {Provider}
      * @memberof RouteQuote
      */
-    provider: string;
-    /**
-     * Quote UUID
-     * @type {string}
-     * @memberof RouteQuote
-     */
-    quote_id: string;
+    provider: Provider;
     /**
      * Destination asset/mint/contract
      * @type {string}
@@ -101,11 +124,11 @@ export interface RouteQuote {
      */
     to_chain: Network;
     /**
-     * Generated transaction blob (raw or base64)
-     * @type {string}
+     * One or more chain-specific transactions required to execute this route
+     * @type {Array<RouteTransaction>}
      * @memberof RouteQuote
      */
-    transaction?: string | null;
+    transactions?: Array<RouteTransaction>;
 }
 
 
@@ -117,11 +140,12 @@ export function instanceOfRouteQuote(value: object): value is RouteQuote {
     if (!('amount_in' in value) || value['amount_in'] === undefined) return false;
     if (!('amount_out_estimated' in value) || value['amount_out_estimated'] === undefined) return false;
     if (!('created_at' in value) || value['created_at'] === undefined) return false;
+    if (!('expires_at' in value) || value['expires_at'] === undefined) return false;
     if (!('from_asset' in value) || value['from_asset'] === undefined) return false;
     if (!('from_chain' in value) || value['from_chain'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
     if (!('min_amount_out' in value) || value['min_amount_out'] === undefined) return false;
     if (!('provider' in value) || value['provider'] === undefined) return false;
-    if (!('quote_id' in value) || value['quote_id'] === undefined) return false;
     if (!('to_asset' in value) || value['to_asset'] === undefined) return false;
     if (!('to_chain' in value) || value['to_chain'] === undefined) return false;
     return true;
@@ -140,15 +164,16 @@ export function RouteQuoteFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'amount_in': json['amount_in'],
         'amount_out_estimated': json['amount_out_estimated'],
         'created_at': (new Date(json['created_at'])),
+        'expires_at': (json['expires_at'] == null ? null : new Date(json['expires_at'])),
         'fee': json['fee'] == null ? undefined : FeeEstimateFromJSON(json['fee']),
         'from_asset': json['from_asset'],
         'from_chain': NetworkFromJSON(json['from_chain']),
+        'id': json['id'],
         'min_amount_out': json['min_amount_out'],
-        'provider': json['provider'],
-        'quote_id': json['quote_id'],
+        'provider': ProviderFromJSON(json['provider']),
         'to_asset': json['to_asset'],
         'to_chain': NetworkFromJSON(json['to_chain']),
-        'transaction': json['transaction'] == null ? undefined : json['transaction'],
+        'transactions': json['transactions'] == null ? undefined : ((json['transactions'] as Array<any>).map(RouteTransactionFromJSON)),
     };
 }
 
@@ -166,15 +191,16 @@ export function RouteQuoteToJSONTyped(value?: RouteQuote | null, ignoreDiscrimin
         'amount_in': value['amount_in'],
         'amount_out_estimated': value['amount_out_estimated'],
         'created_at': value['created_at'].toISOString(),
+        'expires_at': value['expires_at'] == null ? value['expires_at'] : value['expires_at'].toISOString(),
         'fee': FeeEstimateToJSON(value['fee']),
         'from_asset': value['from_asset'],
         'from_chain': NetworkToJSON(value['from_chain']),
+        'id': value['id'],
         'min_amount_out': value['min_amount_out'],
-        'provider': value['provider'],
-        'quote_id': value['quote_id'],
+        'provider': ProviderToJSON(value['provider']),
         'to_asset': value['to_asset'],
         'to_chain': NetworkToJSON(value['to_chain']),
-        'transaction': value['transaction'],
+        'transactions': value['transactions'] == null ? undefined : ((value['transactions'] as Array<any>).map(RouteTransactionToJSON)),
     };
 }
 

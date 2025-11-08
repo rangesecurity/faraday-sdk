@@ -13,56 +13,55 @@
  */
 
 
+import * as runtime from '../runtime';
+import type {
+  ProviderInfo,
+} from '../models/index';
+import {
+    ProviderInfoFromJSON,
+    ProviderInfoToJSON,
+} from '../models/index';
+
 /**
  * 
- * @export
  */
-export const Network = {
-    eth: 'eth',
-    sepolia: 'sepolia',
-    solana: 'solana',
-    oeth: 'oeth',
-    solana_devnet: 'solana-devnet',
-    osmosis_1: 'osmosis-1',
-    arb1: 'arb1',
-    pol: 'pol',
-    base: 'base',
-    avax: 'avax',
-    bnb: 'bnb',
-    neutron_1: 'neutron-1',
-    celestia: 'celestia',
-    opsep: 'opsep',
-    fuji: 'fuji',
-    amoy: 'amoy',
-    basesep: 'basesep'
-} as const;
-export type Network = typeof Network[keyof typeof Network];
+export class ProvidersApi extends runtime.BaseAPI {
 
+    /**
+     * Get Faraday supported quote providers
+     */
+    async listProvidersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProviderInfo>>> {
+        const queryParameters: any = {};
 
-export function instanceOfNetwork(value: any): boolean {
-    for (const key in Network) {
-        if (Object.prototype.hasOwnProperty.call(Network, key)) {
-            if (Network[key as keyof typeof Network] === value) {
-                return true;
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("BearerAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
+
+        let urlPath = `/v1/providers`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProviderInfoFromJSON));
     }
-    return false;
-}
 
-export function NetworkFromJSON(json: any): Network {
-    return NetworkFromJSONTyped(json, false);
-}
+    /**
+     * Get Faraday supported quote providers
+     */
+    async listProviders(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProviderInfo>> {
+        const response = await this.listProvidersRaw(initOverrides);
+        return await response.value();
+    }
 
-export function NetworkFromJSONTyped(json: any, ignoreDiscriminator: boolean): Network {
-    return json as Network;
 }
-
-export function NetworkToJSON(value?: Network | null): any {
-    return value as any;
-}
-
-export function NetworkToJSONTyped(value: any, ignoreDiscriminator: boolean): Network {
-    return value as Network;
-}
-

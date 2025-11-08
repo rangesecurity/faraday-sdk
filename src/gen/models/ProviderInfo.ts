@@ -13,95 +13,88 @@
  */
 
 import { mapValues } from '../runtime';
-import type { ChainKind } from './ChainKind';
+import type { ProviderKind } from './ProviderKind';
 import {
-    ChainKindFromJSON,
-    ChainKindFromJSONTyped,
-    ChainKindToJSON,
-    ChainKindToJSONTyped,
-} from './ChainKind';
+    ProviderKindFromJSON,
+    ProviderKindFromJSONTyped,
+    ProviderKindToJSON,
+    ProviderKindToJSONTyped,
+} from './ProviderKind';
 
 /**
- * 
+ * ---- API-facing struct ----
  * @export
- * @interface NetworkInfo
+ * @interface ProviderInfo
  */
-export interface NetworkInfo {
+export interface ProviderInfo {
     /**
-     * Alternative strings accepted for this network.
-     * 
-     * > **Note:** Any alias listed here will also parse correctly in
-     * > API requests wherever a network slug is expected.
+     * Aliases accepted for lookup.
      * @type {Array<string>}
-     * @memberof NetworkInfo
+     * @memberof ProviderInfo
      */
     aliases: Array<string>;
     /**
-     * Indicates whether this network is a testnet.
-     * @type {boolean}
-     * @memberof NetworkInfo
+     * Provider category (aggregator, bridge, etc.).
+     * @type {ProviderKind}
+     * @memberof ProviderInfo
      */
-    is_testnet: boolean;
+    kind: ProviderKind;
     /**
-     * Network family: `evm`, `solana`, or `cosmos`.
-     * @type {ChainKind}
-     * @memberof NetworkInfo
-     */
-    kind: ChainKind;
-    /**
-     * Human-readable name for the network.
+     * Human-readable name.
      * @type {string}
-     * @memberof NetworkInfo
+     * @memberof ProviderInfo
      */
     label: string;
     /**
-     * Canonical slug for this blockchain network.
-     * 
-     * > **Note:** Use this value (or one of the `aliases`) as the `from_chain`
-     * > or `to_chain` parameter when submitting quote or transaction requests.
+     * Canonical slug for this provider.
      * @type {string}
-     * @memberof NetworkInfo
+     * @memberof ProviderInfo
      */
     slug: string;
+    /**
+     * Website or documentation URL (optional).
+     * @type {string}
+     * @memberof ProviderInfo
+     */
+    website?: string | null;
 }
 
 
 
 /**
- * Check if a given object implements the NetworkInfo interface.
+ * Check if a given object implements the ProviderInfo interface.
  */
-export function instanceOfNetworkInfo(value: object): value is NetworkInfo {
+export function instanceOfProviderInfo(value: object): value is ProviderInfo {
     if (!('aliases' in value) || value['aliases'] === undefined) return false;
-    if (!('is_testnet' in value) || value['is_testnet'] === undefined) return false;
     if (!('kind' in value) || value['kind'] === undefined) return false;
     if (!('label' in value) || value['label'] === undefined) return false;
     if (!('slug' in value) || value['slug'] === undefined) return false;
     return true;
 }
 
-export function NetworkInfoFromJSON(json: any): NetworkInfo {
-    return NetworkInfoFromJSONTyped(json, false);
+export function ProviderInfoFromJSON(json: any): ProviderInfo {
+    return ProviderInfoFromJSONTyped(json, false);
 }
 
-export function NetworkInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): NetworkInfo {
+export function ProviderInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProviderInfo {
     if (json == null) {
         return json;
     }
     return {
         
         'aliases': json['aliases'],
-        'is_testnet': json['is_testnet'],
-        'kind': ChainKindFromJSON(json['kind']),
+        'kind': ProviderKindFromJSON(json['kind']),
         'label': json['label'],
         'slug': json['slug'],
+        'website': json['website'] == null ? undefined : json['website'],
     };
 }
 
-export function NetworkInfoToJSON(json: any): NetworkInfo {
-    return NetworkInfoToJSONTyped(json, false);
+export function ProviderInfoToJSON(json: any): ProviderInfo {
+    return ProviderInfoToJSONTyped(json, false);
 }
 
-export function NetworkInfoToJSONTyped(value?: NetworkInfo | null, ignoreDiscriminator: boolean = false): any {
+export function ProviderInfoToJSONTyped(value?: ProviderInfo | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
@@ -109,10 +102,10 @@ export function NetworkInfoToJSONTyped(value?: NetworkInfo | null, ignoreDiscrim
     return {
         
         'aliases': value['aliases'],
-        'is_testnet': value['is_testnet'],
-        'kind': ChainKindToJSON(value['kind']),
+        'kind': ProviderKindToJSON(value['kind']),
         'label': value['label'],
         'slug': value['slug'],
+        'website': value['website'],
     };
 }
 

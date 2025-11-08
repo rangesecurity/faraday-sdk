@@ -19,7 +19,7 @@
  */
 export const ChainKind = {
     evm: 'evm',
-    solana: 'solana',
+    svm: 'svm',
     cosmos: 'cosmos'
 } as const;
 export type ChainKind = typeof ChainKind[keyof typeof ChainKind];

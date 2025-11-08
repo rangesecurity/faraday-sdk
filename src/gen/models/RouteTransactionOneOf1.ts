@@ -14,80 +14,81 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ * A Cosmos transaction (usually one or more messages)
  * @export
- * @interface FeeEstimate
+ * @interface RouteTransactionOneOf1
  */
-export interface FeeEstimate {
+export interface RouteTransactionOneOf1 {
     /**
-     * Asset denom or contract address of the fee currency
+     * 
      * @type {string}
-     * @memberof FeeEstimate
+     * @memberof RouteTransactionOneOf1
      */
-    fee_asset: string;
+    chain_id: string;
     /**
-     * Network fee charged for the transaction, in base units (integer string)
+     * 
      * @type {string}
-     * @memberof FeeEstimate
+     * @memberof RouteTransactionOneOf1
      */
-    network_fee: string;
+    kind: RouteTransactionOneOf1KindEnum;
     /**
-     * Quote provider fee, in base units (integer string)
-     * @type {string}
-     * @memberof FeeEstimate
+     * 
+     * @type {Array<any>}
+     * @memberof RouteTransactionOneOf1
      */
-    router_fee: string;
-    /**
-     * Total fee (sum of network and router fees), in base units (integer string)
-     * @type {string}
-     * @memberof FeeEstimate
-     */
-    total_fee: string;
+    msgs: Array<any>;
 }
 
+
 /**
- * Check if a given object implements the FeeEstimate interface.
+ * @export
  */
-export function instanceOfFeeEstimate(value: object): value is FeeEstimate {
-    if (!('fee_asset' in value) || value['fee_asset'] === undefined) return false;
-    if (!('network_fee' in value) || value['network_fee'] === undefined) return false;
-    if (!('router_fee' in value) || value['router_fee'] === undefined) return false;
-    if (!('total_fee' in value) || value['total_fee'] === undefined) return false;
+export const RouteTransactionOneOf1KindEnum = {
+    cosmos: 'cosmos'
+} as const;
+export type RouteTransactionOneOf1KindEnum = typeof RouteTransactionOneOf1KindEnum[keyof typeof RouteTransactionOneOf1KindEnum];
+
+
+/**
+ * Check if a given object implements the RouteTransactionOneOf1 interface.
+ */
+export function instanceOfRouteTransactionOneOf1(value: object): value is RouteTransactionOneOf1 {
+    if (!('chain_id' in value) || value['chain_id'] === undefined) return false;
+    if (!('kind' in value) || value['kind'] === undefined) return false;
+    if (!('msgs' in value) || value['msgs'] === undefined) return false;
     return true;
 }
 
-export function FeeEstimateFromJSON(json: any): FeeEstimate {
-    return FeeEstimateFromJSONTyped(json, false);
+export function RouteTransactionOneOf1FromJSON(json: any): RouteTransactionOneOf1 {
+    return RouteTransactionOneOf1FromJSONTyped(json, false);
 }
 
-export function FeeEstimateFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeeEstimate {
+export function RouteTransactionOneOf1FromJSONTyped(json: any, ignoreDiscriminator: boolean): RouteTransactionOneOf1 {
     if (json == null) {
         return json;
     }
     return {
         
-        'fee_asset': json['fee_asset'],
-        'network_fee': json['network_fee'],
-        'router_fee': json['router_fee'],
-        'total_fee': json['total_fee'],
+        'chain_id': json['chain_id'],
+        'kind': json['kind'],
+        'msgs': json['msgs'],
     };
 }
 
-export function FeeEstimateToJSON(json: any): FeeEstimate {
-    return FeeEstimateToJSONTyped(json, false);
+export function RouteTransactionOneOf1ToJSON(json: any): RouteTransactionOneOf1 {
+    return RouteTransactionOneOf1ToJSONTyped(json, false);
 }
 
-export function FeeEstimateToJSONTyped(value?: FeeEstimate | null, ignoreDiscriminator: boolean = false): any {
+export function RouteTransactionOneOf1ToJSONTyped(value?: RouteTransactionOneOf1 | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'fee_asset': value['fee_asset'],
-        'network_fee': value['network_fee'],
-        'router_fee': value['router_fee'],
-        'total_fee': value['total_fee'],
+        'chain_id': value['chain_id'],
+        'kind': value['kind'],
+        'msgs': value['msgs'],
     };
 }
 
